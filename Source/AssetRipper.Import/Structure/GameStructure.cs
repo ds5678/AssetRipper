@@ -73,8 +73,16 @@ namespace AssetRipper.Import.Structure
 				filePaths = PlatformStructure.Files.Union(MixedStructure.Files).Select(pair => pair.Value);
 			}
 
+			int totalFiles = filePaths.Count();
+			int processedFiles = 0;
+
 			FileCollection = GameBundle.FromPaths(
-				filePaths,
+				filePaths.Select(path => 
+				{
+					processedFiles++;
+					Logger.Info(LogCategory.Import, $"({processedFiles}/{totalFiles}) Importing '{Path.GetFileName(path)}'");
+					return path;
+				}),
 				assetFactory,
 				new GameInitializer(PlatformStructure, MixedStructure, defaultVersion, targetVersion));
 		}

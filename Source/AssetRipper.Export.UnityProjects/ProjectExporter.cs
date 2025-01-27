@@ -91,7 +91,7 @@ namespace AssetRipper.Export.UnityProjects
 				container.CurrentCollection = collection;
 				if (collection.Exportable)
 				{
-					Logger.Info(LogCategory.ExportProgress, $"Exporting '{collection.Name}'");
+					Logger.Info(LogCategory.ExportProgress, $"({i}/{collections.Count}) Exporting '{collection.Name}'");
 					bool exportedSuccessfully = collection.Export(container, options.ProjectRootPath, fileSystem);
 					if (!exportedSuccessfully)
 					{

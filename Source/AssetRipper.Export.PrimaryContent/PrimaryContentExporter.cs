@@ -1,4 +1,4 @@
-﻿using AssetRipper.Assets;
+using AssetRipper.Assets;
 using AssetRipper.Assets.Bundles;
 using AssetRipper.Export.Modules.Textures;
 using AssetRipper.Export.PrimaryContent.Audio;
@@ -125,19 +125,24 @@ public sealed class PrimaryContentExporter
 
 	public void Export(GameBundle fileCollection, CoreConfiguration options, FileSystem fileSystem)
 	{
+		int totalAssets = fileCollection.FetchAssets().Count();
+		int processed = 0;
+
 		List<ExportCollectionBase> collections = CreateCollections(fileCollection);
 
 		foreach (ExportCollectionBase collection in collections)
 		{
 			if (collection.Exportable)
 			{
-				Logger.Info(LogCategory.ExportProgress, $"Exporting '{collection.Name}'");
+				Logger.Info(LogCategory.ExportProgress, $"({processed}/{totalAssets}) Exporting '{collection.Name}'");
 				bool exportedSuccessfully = collection.Export(options.ExportRootPath, fileSystem);
 				if (!exportedSuccessfully)
 				{
 					Logger.Warning(LogCategory.ExportProgress, $"Failed to export '{collection.Name}'");
 				}
 			}
+
+			processed++;
 		}
 	}
 
